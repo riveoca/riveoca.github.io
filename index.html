@@ -115,7 +115,7 @@
     mask-image: radial-gradient(ellipse 80% 70% at 60% 40%, #000 30%, transparent 80%);
     -webkit-mask-image: radial-gradient(ellipse 80% 70% at 60% 40%, #000 30%, transparent 80%);
   }
-  .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: center; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 4rem; align-items: center; }
   .status {
     display: inline-flex; align-items: center; gap: .55rem; padding: .35rem .8rem .35rem .65rem;
     border: 1px solid var(--line); border-radius: 999px; background: var(--card);
@@ -125,8 +125,9 @@
   @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
   .hero h1 {
     margin: 1.4rem 0 0; font-weight: 800; font-stretch: 118%;
-    font-size: clamp(2.6rem, 7vw, 5.4rem); line-height: .95; letter-spacing: -.035em;
+    font-size: clamp(2.2rem, 5.2vw, 4.6rem); line-height: 1; letter-spacing: -.035em;
   }
+  .hero h1 .line { display: block; white-space: nowrap; }
   .hero h1 .hl { color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
   .hero .role {
     margin: 1.2rem 0 0; font-family: var(--mono); font-size: .95rem; color: var(--signal-ink); font-weight: 500;
@@ -146,8 +147,26 @@
   .btn.primary { background: var(--signal); border-color: var(--signal); color: #0E1A2E; }
   .btn.primary:hover { box-shadow: 0 6px 0 -2px #0E1A2E; }
 
-  /* Ilustración: engranajes */
-  .machine { position: relative; }
+  /* Foto en marco de plano */
+  .portrait { position: relative; margin: 0 2rem 0 auto; width: 100%; max-width: 380px; }
+  .frame { position: relative; padding: 10px; background: var(--card); border: 1.5px solid var(--ink); box-shadow: var(--shadow); }
+  .frame img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+  .corner { position: absolute; width: 22px; height: 22px; border: 3px solid var(--signal); }
+  .corner.tl { top: -9px; left: -9px; border-right: 0; border-bottom: 0; }
+  .corner.tr { top: -9px; right: -9px; border-left: 0; border-bottom: 0; }
+  .corner.bl { bottom: -9px; left: -9px; border-right: 0; border-top: 0; }
+  .corner.br { bottom: -9px; right: -9px; border-left: 0; border-top: 0; }
+  .fig { margin-top: .9rem; font-size: .68rem; letter-spacing: .08em; color: var(--muted); text-align: right; }
+  .dim-v { position: absolute; right: -2rem; top: 0; width: 12px; height: calc(100% - 2.2rem); fill: none; stroke: var(--muted); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .dim-v path { vector-effect: non-scaling-stroke; }
+  .dim-v-lbl {
+    position: absolute; right: -2.05rem; top: calc(50% - 1.1rem); transform: translate(50%, -50%) rotate(180deg);
+    writing-mode: vertical-rl; font-size: .62rem; letter-spacing: .12em; color: var(--muted);
+    background: var(--bg); padding: .5rem 0;
+  }
+
+  /* Engranajes animados */
+  .machine { position: absolute; width: 50%; left: -24%; bottom: 8%; filter: drop-shadow(0 8px 16px rgba(14, 26, 46, .18)); }
   .machine svg { width: 100%; height: auto; overflow: visible; }
   .machine .gear-a { transform-origin: 170px 230px; animation: spin 36s linear infinite; }
   .machine .gear-b { transform-origin: 277.2px 140px; animation: spin 20s linear infinite reverse; }
@@ -163,7 +182,7 @@
   .machine .lbl { font-family: var(--mono); font-size: 11px; fill: var(--muted); }
   .machine .lbl.hot { fill: var(--signal-ink); font-weight: 700; }
   .readout {
-    position: absolute; right: 0; bottom: -.5rem; font-family: var(--mono); font-size: .72rem; color: var(--muted);
+    position: absolute; right: -1rem; top: 1.6rem; font-family: var(--mono); font-size: .72rem; color: var(--muted);
     background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: .4rem .65rem; box-shadow: var(--shadow);
   }
 
@@ -184,7 +203,7 @@
   .sec-head .num { font-family: var(--mono); font-size: .85rem; color: var(--signal-ink); font-weight: 700; }
   .sec-head h2 { margin: 0; font-weight: 800; font-stretch: 112%; font-size: clamp(1.9rem, 4vw, 2.7rem); letter-spacing: -.025em; line-height: 1.1; }
   .sec-head .rule { flex: 1; height: 1px; background: var(--line); min-width: 3rem; align-self: center; }
-  .sec-head p { flex-basis: 100%; margin: .4rem 0 0; color: var(--muted); max-width: 40rem; }
+  .sec-head p { flex-basis: 100%; margin: .4rem 0 0; color: var(--muted); }
 
   /* Sobre mí */
   .about { display: grid; grid-template-columns: 1.3fr 1fr; gap: 3rem; align-items: start; }
@@ -231,6 +250,29 @@
   .project .links a { text-decoration: none; display: inline-flex; align-items: center; gap: .35rem; }
   .project .links a:hover { text-decoration: underline; }
   .project .links svg { width: 15px; height: 15px; }
+
+  .project img.shot { padding: 0; object-fit: cover; }
+  .project .window {
+    width: min(86%, 300px); text-align: left; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--card); box-shadow: var(--shadow); overflow: hidden;
+  }
+  .project .window .bar { display: flex; gap: 5px; padding: .5rem .6rem; border-bottom: 1px solid var(--line); }
+  .project .window .bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .project .window .bar i:first-child { background: var(--signal); }
+  .project .window pre { margin: 0; padding: .7rem .8rem .8rem; font-family: var(--mono); font-size: .72rem; line-height: 1.7; color: var(--muted); white-space: pre-wrap; word-break: break-all; }
+  .project .window pre b { color: var(--accent); font-weight: 500; }
+  .project .window pre em { font-style: normal; color: var(--signal-ink); }
+  .project .meta-gh { display: flex; gap: .9rem; font-family: var(--mono); font-size: .72rem; color: var(--muted); }
+  .project .meta-gh span { display: inline-flex; align-items: center; gap: .3rem; }
+  .project .meta-gh .lang::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--lang, var(--accent)); }
+  .project.soon { border-style: dashed; box-shadow: none; background: transparent; }
+  .project.soon:hover { transform: none; }
+  .project.soon .shot { background-color: transparent; }
+  .project.soon .spin { width: 64px; height: 64px; color: var(--muted); animation: spin 14s linear infinite; }
+  @media (prefers-reduced-motion: reduce) { .project.soon .spin { animation: none; } }
+  .more-gh { display: inline-flex; align-items: center; gap: .5rem; margin-top: 2rem; font-weight: 700; text-decoration: none; }
+  .more-gh:hover { text-decoration: underline; }
+  .more-gh svg { width: 18px; height: 18px; }
 
   /* Experiencia */
   .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; }
@@ -309,6 +351,13 @@
   footer { padding: 2.5rem 0 3rem; color: var(--muted); font-size: .88rem; }
   footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
   footer .mono { font-size: .78rem; }
+  .visits { display: inline-flex; align-items: center; gap: .5rem; }
+  .visits[hidden] { display: none; }
+  .visits b {
+    color: var(--signal-ink); background: var(--card); border: 1px solid var(--line); border-radius: 5px;
+    padding: .05rem .45rem; letter-spacing: .12em; font-weight: 700;
+  }
+  .visits .led { width: 7px; height: 7px; border-radius: 50%; background: var(--signal); box-shadow: 0 0 6px var(--signal); }
 
   /* Aparición al hacer scroll (solo con JavaScript activo) */
   .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
@@ -318,7 +367,7 @@
   /* ---------- Responsive ---------- */
   @media (max-width: 960px) {
     .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .machine { max-width: 420px; margin: 0 auto; width: 100%; }
+    .portrait { margin: 1rem auto 0; max-width: 340px; }
     .about, .columns { grid-template-columns: 1fr; gap: 2.5rem; }
     .skills { grid-template-columns: 1fr 1fr; }
     .titleblock { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -336,7 +385,9 @@
     .titleblock div:nth-child(3) { border-right: 1px solid var(--line); }
     .titleblock div:nth-child(2n) { border-right: 0; }
     .titleblock div:last-child { grid-column: 1 / -1; border-bottom: 0; }
-    .readout { display: none; }
+    .readout, .dim-v, .dim-v-lbl { display: none; }
+    .portrait { max-width: 290px; }
+    .machine { width: 44%; left: -9%; bottom: 6%; }
   }
 </style>
 </head>
@@ -368,7 +419,7 @@
       <div class="hero-grid">
         <div>
           <span class="status"><span class="dot" aria-hidden="true"></span>Abierto a nuevas oportunidades</span>
-          <h1>Iker Santiago<br><span class="hl">Rivera</span> Ocampo</h1>
+          <h1><span class="line">Iker Santiago</span><span class="line"><span class="hl">Rivera</span> Ocampo</span></h1>
           <p class="role">&gt; ingeniería_mecatrónica — software + hardware<span class="caret" aria-hidden="true">&nbsp;</span></p>
           <p class="lead">Estudiante de sexto semestre en la Universidad ECCI. Desarrollo software y me interesa conectarlo con el mundo físico: sensores, actuadores y automatización.</p>
           <div class="actions">
@@ -387,46 +438,41 @@
           </div>
         </div>
 
-        <!-- Engranajes animados estilo plano técnico -->
-        <div class="machine" aria-hidden="true">
-          <svg viewBox="40 40 360 335">
-            <!-- ejes y cotas -->
-            <line class="dim" x1="170" y1="360" x2="170" y2="95" stroke-dasharray="14 4 2 4"/>
-            <line class="dim" x1="55" y1="230" x2="300" y2="230" stroke-dasharray="14 4 2 4"/>
-            <line class="dim" x1="170" y1="230" x2="277.2" y2="140"/>
-            <text class="lbl" x="232" y="198" transform="rotate(-40 232 198)">C = 140</text>
-            <path class="dim" d="M70 345 H270 M70 339 v12 M270 339 v12"/>
-            <text class="lbl" x="150" y="364">Ø 200</text>
-            <text class="lbl hot" x="58" y="92">Z₁ = 18</text>
-            <text class="lbl hot" x="330" y="58">Z₂ = 10</text>
-            <text class="lbl" x="330" y="73">i = 1.8</text>
+        <!-- Foto en marco de plano técnico, con engranajes animados -->
+        <figure class="portrait">
+          <div class="frame">
+            <img src="img/iker.jpg" alt="Foto de Iker Santiago Rivera Ocampo" width="800" height="1000">
+            <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          </div>
+          <figcaption class="fig mono">FIG. 01 — I. RIVERA · ESC 1:1</figcaption>
+          <svg class="dim-v" viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true"><path d="M10 0V100M4 0H16M4 100H16"/></svg>
+          <span class="dim-v-lbl mono" aria-hidden="true">ING. MECATRÓNICA</span>
 
-            <!-- engranaje grande -->
-            <g class="gear-a"><g transform="rotate(10 170 230)">
-              <circle class="teeth" cx="170" cy="230" r="90" stroke-width="20" stroke-dasharray="13 18.416" stroke-dashoffset="6.5"/>
-              <circle class="body" cx="170" cy="230" r="82"/>
-              <circle class="pitch" cx="170" cy="230" r="90"/>
-              <circle class="hole" cx="170" cy="180" r="12"/>
-              <circle class="hole" cx="213.3" cy="255" r="12"/>
-              <circle class="hole" cx="126.7" cy="255" r="12"/>
-              <circle class="hole" cx="170" cy="230" r="18"/>
-              <rect x="166" y="206" width="8" height="8" fill="var(--ink)"/>
-            </g></g>
-
-            <!-- engranaje pequeño -->
-            <g class="gear-b"><g transform="rotate(32 277.2 140)">
-              <circle class="teeth" cx="277.2" cy="140" r="50" stroke-width="20" stroke-dasharray="13 18.416" stroke-dashoffset="6.5" style="stroke: var(--signal)"/>
-              <circle class="body" cx="277.2" cy="140" r="42" style="stroke: var(--signal)"/>
-              <circle class="pitch" cx="277.2" cy="140" r="50"/>
-              <circle class="hole" cx="277.2" cy="140" r="11" style="stroke: var(--signal)"/>
-              <line x1="277.2" y1="112" x2="277.2" y2="124" stroke="var(--signal)" stroke-width="3"/>
-            </g></g>
-
-            <circle cx="170" cy="230" r="2.5" fill="var(--accent)"/>
-            <circle cx="277.2" cy="140" r="2.5" fill="var(--accent)"/>
-          </svg>
-          <div class="readout" id="readout">X 000.0 · Y 000.0</div>
-        </div>
+          <div class="machine" aria-hidden="true">
+            <svg viewBox="62 72 285 268">
+              <g class="gear-a"><g transform="rotate(10 170 230)">
+                <circle class="teeth" cx="170" cy="230" r="90" stroke-width="20" stroke-dasharray="13 18.416" stroke-dashoffset="6.5"/>
+                <circle class="body" cx="170" cy="230" r="82"/>
+                <circle class="pitch" cx="170" cy="230" r="90"/>
+                <circle class="hole" cx="170" cy="180" r="12"/>
+                <circle class="hole" cx="213.3" cy="255" r="12"/>
+                <circle class="hole" cx="126.7" cy="255" r="12"/>
+                <circle class="hole" cx="170" cy="230" r="18"/>
+                <rect x="166" y="206" width="8" height="8" fill="var(--ink)"/>
+              </g></g>
+              <g class="gear-b"><g transform="rotate(32 277.2 140)">
+                <circle class="teeth" cx="277.2" cy="140" r="50" stroke-width="20" stroke-dasharray="13 18.416" stroke-dashoffset="6.5" style="stroke: var(--signal)"/>
+                <circle class="body" cx="277.2" cy="140" r="42" style="stroke: var(--signal)"/>
+                <circle class="pitch" cx="277.2" cy="140" r="50"/>
+                <circle class="hole" cx="277.2" cy="140" r="11" style="stroke: var(--signal)"/>
+                <line x1="277.2" y1="112" x2="277.2" y2="124" stroke="var(--signal)" stroke-width="3"/>
+              </g></g>
+              <circle cx="170" cy="230" r="2.5" fill="var(--accent)"/>
+              <circle cx="277.2" cy="140" r="2.5" fill="var(--accent)"/>
+            </svg>
+          </div>
+          <div class="readout" id="readout" aria-hidden="true">X 000.0 · Y 000.0</div>
+        </figure>
       </div>
 
       <div class="titleblock reveal" aria-label="Datos generales">
@@ -470,75 +516,14 @@
         <p>Una selección de trabajos de software, electrónica y automatización.</p>
       </div>
 
-      <!--
-        CÓMO EDITAR TUS PROYECTOS
-        Cada <article class="project"> es una tarjeta. Copia una para agregar más o bórrala si sobra.
-        - Imagen: reemplaza TODO el <div class="shot">...</div> por:
-            <img class="shot" src="img/mi-proyecto.jpg" alt="Descripción de la imagen">
-          (sube tus capturas, fotos o GIFs a la carpeta "img" del repositorio)
-        - Cambia el tipo, el título, la descripción, las tecnologías y los enlaces.
-        IMPORTANTE: reemplaza los textos de ejemplo antes de compartir la página.
-      -->
-
-      <div class="projects">
-        <article class="project reveal">
-          <div class="shot">
-            <span class="code">P-01</span>
-            <div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18M8 21h8M12 18v3"/><path d="M9 12l-2 2 2 2M15 12l2 2-2 2"/></svg>
-              Captura o GIF de la aplicación
-            </div>
-          </div>
-          <div class="body">
-            <span class="kind">Desarrollo web</span>
-            <h3>Nombre del proyecto web</h3>
-            <p>Describe en dos líneas qué hace la aplicación y qué problema resuelve.</p>
-            <ul class="tags"><li>Laravel</li><li>PHP</li><li>MySQL</li><li>Docker</li></ul>
-            <div class="links">
-              <a href="https://github.com/riveoca" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>Código</a>
-              <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7M10 14L21 3M21 14v7H3V3h7"/></svg>Demo</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="project reveal">
-          <div class="shot">
-            <span class="code">P-02</span>
-            <div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1.5"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>
-              Foto o video del montaje
-            </div>
-          </div>
-          <div class="body">
-            <span class="kind">Mecatrónica</span>
-            <h3>Nombre del proyecto de mecatrónica</h3>
-            <p>Qué hace el sistema, qué sensores y actuadores usa y qué resultado obtuviste.</p>
-            <ul class="tags"><li>C++</li><li>Sensores</li><li>Actuadores</li></ul>
-            <div class="links">
-              <a href="https://github.com/riveoca" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>Código</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="project reveal">
-          <div class="shot">
-            <span class="code">P-03</span>
-            <div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
-              Captura del proyecto
-            </div>
-          </div>
-          <div class="body">
-            <span class="kind">Automatización</span>
-            <h3>Nombre del proyecto de automatización</h3>
-            <p>Por ejemplo, pruebas automatizadas o un script que ahorre trabajo repetitivo.</p>
-            <ul class="tags"><li>Python</li><li>Selenium</li></ul>
-            <div class="links">
-              <a href="https://github.com/riveoca" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>Código</a>
-            </div>
-          </div>
-        </article>
+      <!-- Las tarjetas se generan desde la lista PROYECTOS, al final de este archivo. -->
+      <div class="projects" id="projects-grid">
+        <noscript><p>Mira mis proyectos en <a href="https://github.com/riveoca">github.com/riveoca</a>.</p></noscript>
       </div>
+      <a class="more-gh reveal" href="https://github.com/riveoca?tab=repositories" target="_blank" rel="noopener">
+        Ver todos los repositorios en GitHub
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
     </div>
   </section>
 
@@ -661,11 +646,114 @@
 <footer>
   <div class="wrap">
     <span>© <span id="year">2026</span> Iker Santiago Rivera Ocampo</span>
+    <span class="visits mono" id="visits" hidden><span class="led" aria-hidden="true"></span>VISITAS <b id="visits-n">0</b></span>
     <span class="mono">Hecho a mano con HTML y CSS · Bogotá, CO</span>
   </div>
 </footer>
 
+<script src="config.js"></script>
 <script>
+  // ---------- Proyectos (se generan desde config.js) ----------
+  var GH_USER = "riveoca";
+  var LANG_COLORS = { PHP: "#777BB4", Python: "#3572A5", "C++": "#F34B7D", C: "#555555", JavaScript: "#F1E05A", HTML: "#E34C26", Blade: "#F7523F" };
+  var ICONS = {
+    web: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18M8 21h8M12 18v3"/><path d="M9 12l-2 2 2 2M15 12l2 2-2 2"/></svg>',
+    code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>',
+    ext: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7M10 14L21 3M21 14v7H3V3h7"/></svg>',
+    gear: '<svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>'
+  };
+
+  function esc(t) { return String(t == null ? "" : t).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function pretty(name) { var t = name.replace(/[-_]+/g, " ").trim(); return t.charAt(0).toUpperCase() + t.slice(1); }
+  function pad(n) { return String(n + 1).padStart(2, "0"); }
+
+  function card(p, i, gh) {
+    gh = gh || {};
+    var title = p.titulo || gh.name && pretty(gh.name) || (p.repo ? pretty(p.repo) : "Proyecto");
+    var desc = p.descripcion || gh.description || "";
+    var lang = gh.language;
+    var tags = p.tags && p.tags.length ? p.tags : (lang ? [lang] : []);
+    var repoUrl = p.repo ? "https://github.com/" + GH_USER + "/" + p.repo : null;
+
+    var shot = p.imagen
+      ? '<img class="shot" src="' + esc(p.imagen) + '" alt="' + esc(title) + '" loading="lazy">'
+      : '<div class="shot"><span class="code">P-' + pad(i) + '</span>' +
+          (p.repo
+            ? '<div class="window" aria-hidden="true"><div class="bar"><i></i><i></i><i></i></div><pre><em>$</em> git clone\n<b>' + esc(GH_USER) + '/' + esc(p.repo) + '</b>' + (lang ? '\n<em>#</em> ' + esc(lang) : '') + '</pre></div>'
+            : '<div>' + ICONS.web + 'Proyecto</div>') +
+        '</div>';
+    if (p.imagen) shot = '<div style="position:relative">' + shot + '<span class="code">P-' + pad(i) + '</span></div>';
+
+    var meta = "";
+    if (gh.language || gh.pushed_at) {
+      meta = '<div class="meta-gh">' +
+        (gh.language ? '<span class="lang" style="--lang:' + (LANG_COLORS[gh.language] || "var(--accent)") + '">' + esc(gh.language) + '</span>' : '') +
+        (gh.pushed_at ? '<span>Actualizado ' + new Date(gh.pushed_at).toLocaleDateString("es-CO", { month: "short", year: "numeric" }) + '</span>' : '') +
+        '</div>';
+    }
+
+    var links = "";
+    if (repoUrl) links += '<a href="' + repoUrl + '" target="_blank" rel="noopener">' + ICONS.code + 'Código</a>';
+    if (p.demo) links += '<a href="' + esc(p.demo) + '" target="_blank" rel="noopener">' + ICONS.ext + 'Demo</a>';
+
+    return '<article class="project reveal in">' + shot +
+      '<div class="body">' +
+        (p.tipo ? '<span class="kind">' + esc(p.tipo) + '</span>' : '') +
+        '<h3>' + esc(title) + '</h3>' +
+        (desc ? '<p>' + esc(desc) + '</p>' : '') +
+        (tags.length ? '<ul class="tags">' + tags.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul>' : '') +
+        meta +
+        (links ? '<div class="links">' + links + '</div>' : '') +
+      '</div></article>';
+  }
+
+  function soonCard() {
+    return '<article class="project soon">' +
+      '<div class="shot">' + ICONS.gear + '</div>' +
+      '<div class="body"><span class="kind">En el taller</span><h3>Próximo proyecto</h3>' +
+      '<p>Estoy preparando nuevos proyectos de mecatrónica y automatización. Pronto estarán aquí.</p></div></article>';
+  }
+
+  (function renderProjects() {
+    var grid = document.getElementById("projects-grid");
+    var list = (typeof PROYECTOS !== "undefined" ? PROYECTOS : []).filter(function (p) { return p && (p.repo || p.titulo); });
+    var ghData = {};
+    function draw() {
+      var html = list.map(function (p, i) { return card(p, i, ghData[p.repo]); }).join("");
+      if (list.length < 3) html += soonCard();
+      grid.innerHTML = html;
+    }
+    draw();
+    // Completa los datos con la información de GitHub
+    list.forEach(function (p) {
+      if (!p.repo || !window.fetch) return;
+      fetch("https://api.github.com/repos/" + GH_USER + "/" + p.repo)
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) { if (d) { ghData[p.repo] = d; draw(); } })
+        .catch(function () {});
+    });
+  })();
+
+  // ---------- Contador de visitas (GoatCounter) ----------
+  (function counter() {
+    if (typeof GOATCOUNTER === "undefined" || !GOATCOUNTER) return;
+    var base = "https://" + GOATCOUNTER + ".goatcounter.com";
+    var sc = document.createElement("script");
+    sc.async = true; sc.src = "https://gc.zgo.at/count.js";
+    sc.setAttribute("data-goatcounter", base + "/count");
+    document.body.appendChild(sc);
+    if (!window.fetch) return;
+    fetch(base + "/counter/TOTAL.json")
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || d.count == null) return;
+        var n = String(d.count).replace(/\D/g, "");
+        document.getElementById("visits-n").textContent = n.padStart(5, "0");
+        document.getElementById("visits").hidden = false;
+      })
+      .catch(function () {});
+  })();
+
   // Tema claro / oscuro
   document.getElementById("theme").addEventListener("click", function () {
     var root = document.documentElement;
