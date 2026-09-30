@@ -115,7 +115,7 @@
     mask-image: radial-gradient(ellipse 80% 70% at 60% 40%, #000 30%, transparent 80%);
     -webkit-mask-image: radial-gradient(ellipse 80% 70% at 60% 40%, #000 30%, transparent 80%);
   }
-  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 4rem; align-items: center; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, .6fr); gap: 4rem; align-items: center; }
   .status {
     display: inline-flex; align-items: center; gap: .55rem; padding: .35rem .8rem .35rem .65rem;
     border: 1px solid var(--line); border-radius: 999px; background: var(--card);
@@ -148,7 +148,7 @@
   .btn.primary:hover { box-shadow: 0 6px 0 -2px #0E1A2E; }
 
   /* Foto en marco de plano */
-  .portrait { position: relative; margin: 0 2rem 0 auto; width: 100%; max-width: 380px; }
+  .portrait { position: relative; margin: 0 2rem 0 auto; width: 100%; max-width: 290px; }
   .frame { position: relative; padding: 10px; background: var(--card); border: 1.5px solid var(--ink); box-shadow: var(--shadow); }
   .frame img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
   .corner { position: absolute; width: 22px; height: 22px; border: 3px solid var(--signal); }
@@ -367,7 +367,7 @@
   /* ---------- Responsive ---------- */
   @media (max-width: 960px) {
     .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .portrait { margin: 1rem auto 0; max-width: 340px; }
+    .portrait { margin: 1rem auto 0; max-width: 260px; }
     .about, .columns { grid-template-columns: 1fr; gap: 2.5rem; }
     .skills { grid-template-columns: 1fr 1fr; }
     .titleblock { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -386,7 +386,7 @@
     .titleblock div:nth-child(2n) { border-right: 0; }
     .titleblock div:last-child { grid-column: 1 / -1; border-bottom: 0; }
     .readout, .dim-v, .dim-v-lbl { display: none; }
-    .portrait { max-width: 290px; }
+    .portrait { max-width: 220px; }
     .machine { width: 44%; left: -9%; bottom: 6%; }
   }
 </style>
@@ -516,7 +516,6 @@
         <p>Una selección de trabajos de software, electrónica y automatización.</p>
       </div>
 
-      <!-- Las tarjetas se generan desde la lista PROYECTOS, al final de este archivo. -->
       <div class="projects" id="projects-grid">
         <noscript><p>Mira mis proyectos en <a href="https://github.com/riveoca">github.com/riveoca</a>.</p></noscript>
       </div>
@@ -634,9 +633,6 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3"/></svg>
             CV en PDF
           </a>
-          <!-- Cuando tengas LinkedIn, quita los signos de comentario y pon tu enlace:
-          <a href="https://www.linkedin.com/in/TU-PERFIL" target="_blank" rel="noopener">LinkedIn</a>
-          -->
         </div>
       </div>
     </div>
