@@ -297,7 +297,16 @@
 
   /* ---------- Proyectos ---------- */
   section.alt { background: var(--bg-2); border-block: 1px solid var(--line); }
-  .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: 1.5rem; }
+  .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+  .project.featured { grid-column: 1 / -1; flex-direction: row; }
+  .project.featured .shot { width: 44%; flex: none; aspect-ratio: auto; min-height: 17rem; border-bottom: 0; border-right: 1px solid var(--line); }
+  .project.featured .body { padding: 1.8rem 2rem; }
+  .project.featured h3 { font-size: 1.5rem; }
+  .project .state {
+    position: absolute; top: .8rem; right: .8rem; font-family: var(--mono); font-size: .68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .06em; padding: .2rem .5rem; border-radius: 5px;
+    background: var(--signal); color: #0E1A2E;
+  }
   .project {
     background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
     display: flex; flex-direction: column; box-shadow: var(--shadow);
@@ -311,7 +320,7 @@
     background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
     background-size: 20px 20px; font-family: var(--mono); font-size: .8rem;
   }
-  .project .shot svg { width: 56px; height: 56px; margin: 0 auto .6rem; color: var(--accent); opacity: .85; }
+  .project .shot svg { display: block; width: 56px; height: 56px; margin: 0 auto .6rem; color: var(--accent); opacity: .85; }
   .project .code {
     position: absolute; top: .8rem; left: .8rem; font-family: var(--mono); font-size: .7rem; font-weight: 700;
     background: var(--ink); color: var(--signal); padding: .2rem .5rem; border-radius: 5px;
@@ -503,6 +512,10 @@
     .hero { padding: 3rem 0 3.5rem; }
     section.block { padding: 5rem 0; }
     .bento { grid-template-columns: 1fr; }
+    .projects { grid-template-columns: 1fr; }
+    .project.featured { flex-direction: column; }
+    .project.featured .shot { width: 100%; min-height: 0; aspect-ratio: 16 / 10; border-right: 0; border-bottom: 1px solid var(--line); }
+    .project.featured .body { padding: 1.3rem 1.35rem 1.4rem; }
     .tile.prog, .tile.tools, .tile.wide { grid-column: auto; }
     .titleblock { grid-template-columns: 1fr 1fr; }
     .titleblock div { border-bottom: 1px solid var(--line); }
@@ -540,6 +553,7 @@
     <nav aria-label="Secciones">
       <ul>
         <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#proyectos">Proyectos</a></li>
         <li><a href="#experiencia">Experiencia</a></li>
         <li><a href="#habilidades">Habilidades</a></li>
         <li><a href="#contacto">Contacto</a></li>
@@ -564,14 +578,14 @@
             <span class="line"><span style="--d:.15s">Iker Santiago</span></span>
             <span class="line"><span style="--d:.3s"><span class="hl">Rivera</span> Ocampo</span></span>
           </h1>
-          <p class="role intro" style="--d:.55s"><span id="role">&gt; ingeniería_mecatrónica — software + hardware</span><span class="caret" aria-hidden="true">&nbsp;</span></p>
-          <p class="lead intro" style="--d:.7s">Estudiante de Ingeniería Mecatrónica. Desarrollo software y me interesa conectarlo con el mundo físico: sensores, actuadores y automatización.</p>
+          <p class="role intro" style="--d:.55s"><span id="role">&gt; ingeniería_mecatrónica — desarrollo de software</span><span class="caret" aria-hidden="true">&nbsp;</span></p>
+          <p class="lead intro" style="--d:.7s">Estudiante de Ingeniería Mecatrónica y desarrollador de software. Construyo aplicaciones web, APIs y herramientas en Python, y me interesa conectar el software con el mundo físico.</p>
           <div class="actions intro" style="--d:.85s">
             <a class="btn primary" href="#contacto">
               Contactar
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
-            <a class="btn" href="CV_Iker_Rivera.pdf" download>
+            <a class="btn" href="CV_Iker_Rivera.pdf" download data-cv>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
               Descargar CV
             </a>
@@ -624,7 +638,7 @@
       <div class="titleblock" aria-label="Datos generales">
         <div style="--i:0"><small>Carrera</small><strong>Ing. Mecatrónica</strong></div>
         <div style="--i:1"><small>Universidad</small><strong>ECCI</strong></div>
-        <div style="--i:2"><small>Semestre</small><strong>Sexto</strong></div>
+        <div style="--i:2"><small>Enfoque</small><strong>Desarrollo de software</strong></div>
         <div style="--i:3"><small>Experiencia</small><strong>6 meses · Dev</strong></div>
         <div style="--i:4"><small>Ubicación</small><strong>Bogotá, CO</strong></div>
       </div>
@@ -646,10 +660,10 @@
       <div class="about">
         <div class="reveal">
           <p class="statement">Me gusta entender cómo funcionan las cosas y construir soluciones que <mark>unan el código con el mundo físico</mark>.</p>
-          <p class="body">Mi experiencia más reciente es en desarrollo de software: he participado en el desarrollo, las pruebas y el mantenimiento de aplicaciones web junto a un equipo técnico. Desde la mecatrónica complemento eso con electrónica, automatización, modelado 3D y diseño gráfico.</p>
-          <p class="body">Soy analítico y proactivo, disfruto resolver problemas y explicar las ideas con claridad.</p>
+          <p class="body">Tengo seis meses de práctica como desarrollador, donde participé en el desarrollo, las pruebas y el mantenimiento de soluciones de software. Trabajo con Python, PHP con Laravel, SQL (MySQL) y Docker sobre Linux, y he construido endpoints de API, herramientas de extracción de datos y prototipos con IA local. Quiero seguir creciendo como desarrollador.</p>
+          <p class="body">Como ingeniero, me gusta entender cómo funciona un sistema y cómo puede fallar antes de construirlo. Me comunico con claridad con equipos técnicos y no técnicos, y aprendo rápido herramientas nuevas.</p>
           <ul class="traits">
-            <li>Analítico</li><li>Proactivo</li><li>Resolución de problemas</li><li>Trabajo en equipo</li><li>Comunicación asertiva</li>
+            <li>Analítico</li><li>Atención al detalle</li><li>Resolución de problemas</li><li>Aprendizaje rápido</li><li>Comunicación clara</li>
           </ul>
         </div>
 
@@ -695,12 +709,12 @@
     </div>
   </section>
 
-  <!-- ================= PROYECTOS (oculto por ahora) ================= -->
-  <section class="block alt" id="proyectos" hidden>
+  <!-- ================= PROYECTOS ================= -->
+  <section class="block alt" id="proyectos">
     <div class="wrap">
       <div class="sec-head reveal">
         <span class="num">02</span><h2>Proyectos</h2><span class="rule"></span>
-        <p>Una selección de trabajos de software, electrónica y automatización.</p>
+        <p>Trabajos de desarrollo web, software y mecatrónica.</p>
       </div>
       <div class="projects" id="projects-grid"></div>
       <a class="more-gh reveal" href="https://github.com/riveoca?tab=repositories" target="_blank" rel="noopener">
@@ -712,33 +726,35 @@
 
   <!-- ================= EXPERIENCIA ================= -->
   <section class="block dark" id="experiencia">
-    <span class="watermark" aria-hidden="true">02</span>
+    <span class="watermark" aria-hidden="true">03</span>
     <div class="wrap">
-      <div class="sec-head reveal"><span class="num">02</span><h2>Experiencia y formación</h2><span class="rule"></span></div>
+      <div class="sec-head reveal"><span class="num">03</span><h2>Experiencia y formación</h2><span class="rule"></span></div>
       <div class="columns">
         <div>
           <h3 class="col-title reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>Experiencia</h3>
           <ol class="timeline">
-            <li class="current">
+            <li>
               <div class="entry reveal">
-                <span class="when">04/2026 — 10/2026</span><span class="badge">ACTUAL</span>
-                <h4>Practicante de desarrollo</h4>
+                <span class="when">04/2026 — 10/2026</span>
+                <h4>Desarrollador</h4>
                 <p class="org">Servitel · Bogotá</p>
                 <ul>
-                  <li>Prácticas profesionales de seis meses en el área de desarrollo.</li>
-                  <li>Apoyo en el desarrollo, pruebas y mantenimiento de soluciones de software.</li>
-                  <li>Trabajo colaborativo con el equipo técnico para cumplir los requerimientos de los proyectos.</li>
+                  <li>Extracción y organización de datos de un aplicativo con scraping, con endpoints de API para consumirlos y validación con Postman.</li>
+                  <li>Prototipos de chatbots con modelos de IA locales usando Ollama.</li>
+                  <li>Automatización de navegador con Selenium para probar el aplicativo de la empresa.</li>
+                  <li>Pruebas manuales y reporte de hallazgos al equipo de desarrollo.</li>
                 </ul>
               </div>
             </li>
             <li>
               <div class="entry reveal" style="--i:1">
-                <span class="when">06/2025 — 09/2025</span>
-                <h4>Asesor de ventas</h4>
-                <p class="org">NAT Confection · Bogotá</p>
+                <span class="when">10/2025 — 02/2026</span>
+                <h4>Asistente de permanencia estudiantil</h4>
+                <p class="org">Treball Consulting S.A.S. · Bogotá</p>
                 <ul>
-                  <li>Venta de prendas de vestir con atención y asesoría personalizada.</li>
-                  <li>Desarrollo de habilidades de comunicación, negociación y servicio al cliente.</li>
+                  <li>Seguimiento telefónico a estudiantes y registro de su avance en los módulos de formación.</li>
+                  <li>Detección temprana de alertas de deserción y reporte con contexto para aplicar estrategias de retención.</li>
+                  <li>Soporte a usuarios en Zoom y comunicación entre estudiantes y la empresa.</li>
                 </ul>
               </div>
             </li>
@@ -778,7 +794,7 @@
   <!-- ================= HABILIDADES ================= -->
   <section class="block" id="habilidades">
     <div class="wrap">
-      <div class="sec-head reveal"><span class="num">03</span><h2>Habilidades</h2><span class="rule"></span></div>
+      <div class="sec-head reveal"><span class="num">04</span><h2>Habilidades</h2><span class="rule"></span></div>
       <div class="bento">
         <div class="tile prog reveal">
           <div class="head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></span><h3>Programación</h3></div>
@@ -786,27 +802,27 @@
             <div class="bar"><i></i><i></i><i></i><span>sensor.cpp</span></div>
 <pre><span class="ln" data-n="1"><span class="c">// leer sensor, activar actuador</span></span><span class="ln" data-n="2"><span class="k">int</span> valor = <span class="f">analogRead</span>(A0);</span><span class="ln" data-n="3"><span class="k">float</span> temp = valor * <span class="n">0.488</span>;</span><span class="ln" data-n="4"></span><span class="ln" data-n="5"><span class="k">if</span> (temp &gt; <span class="n">30.0</span>) {</span><span class="ln" data-n="6">  <span class="f">digitalWrite</span>(VENTILADOR, HIGH);</span><span class="ln" data-n="7">}<span class="cursor"></span></span></pre>
           </div>
-          <ul class="chips"><li class="strong">C++ <em>intermedio</em></li><li>Python</li><li>PHP</li><li>HTML</li><li>Laravel <em>básico</em></li></ul>
+          <ul class="chips"><li class="strong">Python</li><li class="strong">C++ <em>intermedio</em></li><li>PHP + Laravel <em>básico</em></li><li>HTML</li><li>SQL</li></ul>
         </div>
 
         <div class="tile tools reveal" style="--i:1">
           <div class="head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9l-3.8 3.8z"/></svg></span><h3>Herramientas</h3></div>
-          <ul class="chips"><li>Docker</li><li>MySQL</li><li>Selenium</li><li>Linux <em>básico</em></li></ul>
+          <ul class="chips"><li class="strong">APIs + Postman</li><li>Web scraping</li><li>Selenium</li><li>IA local con Ollama</li><li>Pruebas de software</li><li>Playwright <em>básico</em></li></ul>
         </div>
 
         <div class="tile reveal" style="--i:2">
-          <div class="head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><h3>Automatización</h3></div>
-          <ul class="chips"><li>Sensores</li><li>Actuadores</li></ul>
+          <div class="head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><h3>Hardware</h3></div>
+          <ul class="chips"><li>Sensores</li><li>Actuadores</li><li>Raspberry Pi</li></ul>
         </div>
 
         <div class="tile reveal" style="--i:3">
-          <div class="head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg></span><h3>Diseño y modelado</h3></div>
-          <ul class="chips"><li class="strong">Illustrator <em>intermedio</em></li><li>Photoshop <em>básico</em></li><li>Modelado 3D <em>básico</em></li></ul>
+          <div class="head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg></span><h3>Diseño y ofimática</h3></div>
+          <ul class="chips"><li class="strong">Excel <em>avanzado</em></li><li>Illustrator <em>intermedio</em></li><li>Photoshop <em>básico</em></li><li>Modelado 3D <em>básico</em></li></ul>
         </div>
 
         <div class="tile wide reveal" style="--i:1">
-          <div class="head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg></span><h3>Ofimática</h3></div>
-          <ul class="chips"><li class="strong">Microsoft Excel <em>avanzado</em></li></ul>
+          <div class="head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4M6 8l3 2-3 2M11 12h4"/></svg></span><h3>Entornos y datos</h3></div>
+          <ul class="chips"><li>Docker</li><li>MySQL</li><li>Linux <em>básico</em></li></ul>
         </div>
 
         <div class="tile wide reveal" style="--i:2">
@@ -821,7 +837,7 @@
   <section class="block contact" id="contacto">
     <svg class="bg-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=".3" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
     <div class="wrap">
-      <span class="num reveal">04 — Contacto</span>
+      <span class="num reveal">05 — Contacto</span>
       <h2 class="reveal" style="--i:1">¿Hablamos?</h2>
       <p class="reveal" style="--i:2">Estoy abierto a oportunidades de práctica, trabajo y proyectos en desarrollo de software y automatización.</p>
       <div class="mail reveal" style="--i:3">
@@ -833,7 +849,7 @@
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
           github.com/riveoca
         </a>
-        <a href="CV_Iker_Rivera.pdf" download>
+        <a href="CV_Iker_Rivera.pdf" download data-cv>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3"/></svg>
           CV en PDF
         </a>
@@ -854,10 +870,25 @@
 <script>
   var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // ---------- CV: si config.js tiene un enlace de Google Drive, se usa ese ----------
+  (function cvLink() {
+    var url = typeof CV_URL !== "undefined" ? String(CV_URL || "").trim() : "";
+    if (!url) return;
+    var doc = url.match(/docs\.google\.com\/document\/d\/([\w-]+)/);
+    var file = url.match(/\/file\/d\/([\w-]+)/) || url.match(/[?&]id=([\w-]+)/);
+    if (doc) url = "https://docs.google.com/document/d/" + doc[1] + "/export?format=pdf";
+    else if (file) url = "https://drive.google.com/uc?export=download&id=" + file[1];
+    document.querySelectorAll("[data-cv]").forEach(function (a) {
+      a.href = url; a.removeAttribute("download"); a.target = "_blank"; a.rel = "noopener";
+    });
+  })();
+
   // ---------- Proyectos (se generan desde config.js) ----------
   var GH_USER = "riveoca";
   var LANG_COLORS = { PHP: "#777BB4", Python: "#3572A5", "C++": "#F34B7D", C: "#555555", JavaScript: "#F1E05A", HTML: "#E34C26", Blade: "#F7523F" };
   var ICONS = {
+    chip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1.5"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>',
+    test: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7.5 15h9"/><path d="M10 17.5l1.5 1.5 3-3"/></svg>',
     web: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18M8 21h8M12 18v3"/><path d="M9 12l-2 2 2 2M15 12l2 2-2 2"/></svg>',
     code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>',
     ext: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7M10 14L21 3M21 14v7H3V3h7"/></svg>',
@@ -881,7 +912,8 @@
       : '<div class="shot"><span class="code">P-' + pad(i) + '</span>' +
           (p.repo
             ? '<div class="window" aria-hidden="true"><div class="bar"><i></i><i></i><i></i></div><pre><em>$</em> git clone\n<b>' + esc(GH_USER) + '/' + esc(p.repo) + '</b>' + (lang ? '\n<em>#</em> ' + esc(lang) : '') + '</pre></div>'
-            : '<div>' + ICONS.web + 'Proyecto</div>') +
+            : '<div>' + (ICONS[p.icono] || ICONS.web) + esc(p.estado ? p.tipo || 'Proyecto' : p.privado ? 'Código privado' : p.tipo || 'Proyecto') + '</div>') +
+          (p.estado ? '<span class="state">' + esc(p.estado) + '</span>' : '') +
         '</div>';
     if (p.imagen) shot = '<div style="position:relative">' + shot + '<span class="code">P-' + pad(i) + '</span></div>';
 
@@ -897,7 +929,7 @@
     if (repoUrl) links += '<a href="' + repoUrl + '" target="_blank" rel="noopener">' + ICONS.code + 'Código</a>';
     if (p.demo) links += '<a href="' + esc(p.demo) + '" target="_blank" rel="noopener">' + ICONS.ext + 'Demo</a>';
 
-    return '<article class="project reveal in">' + shot +
+    return '<article class="project reveal in' + (p.destacado ? ' featured' : '') + '">' + shot +
       '<div class="body">' +
         (p.tipo ? '<span class="kind">' + esc(p.tipo) + '</span>' : '') +
         '<h3>' + esc(title) + '</h3>' +
@@ -918,11 +950,12 @@
   (function renderProjects() {
     var grid = document.getElementById("projects-grid");
     if (grid.closest("section").hidden) return;
-    var list = (typeof PROYECTOS !== "undefined" ? PROYECTOS : []).filter(function (p) { return p && (p.repo || p.titulo); });
+    var list = (typeof PROYECTOS !== "undefined" ? PROYECTOS : []).filter(function (p) { return p && (p.repo || p.titulo); })
+      .sort(function (a, b) { return (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0); });
     var ghData = {};
     function draw() {
       var html = list.map(function (p, i) { return card(p, i, ghData[p.repo]); }).join("");
-      if (list.length < 3) html += soonCard();
+      if ((list.length - list.filter(function (p) { return p.destacado; }).length) % 2) html += soonCard();
       grid.innerHTML = html;
     }
     draw();
