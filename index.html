@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="Portada del portafolio de Iker Rivera">
 <meta property="og:locale" content="es_CO">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17191C" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#17191C" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='8' fill='%2317191C'/><circle cx='32' cy='32' r='14' fill='none' stroke='%23F2B705' stroke-width='6'/></svg>">
 <link rel="alternate" hreflang="es" href="https://riveoca.github.io/">
@@ -37,6 +37,7 @@
     --rule: #DADDD8;
     --safety: #F2B705;
     --on-safety: #17191C;
+    --deep: #17191C;
     --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
     --cond: "IBM Plex Sans Condensed", "Arial Narrow", "IBM Plex Sans", sans-serif;
     --measure: 64ch;
@@ -44,12 +45,12 @@
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --paper: #17191C; --surface: #202327; --ink: #ECEDEA; --muted: #A2A7AD; --rule: #33373C;
+      --paper: #17191C; --surface: #202327; --ink: #ECEDEA; --muted: #A2A7AD; --rule: #33373C; --deep: #0D0F11;
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --paper: #17191C; --surface: #202327; --ink: #ECEDEA; --muted: #A2A7AD; --rule: #33373C;
+    --paper: #17191C; --surface: #202327; --ink: #ECEDEA; --muted: #A2A7AD; --rule: #33373C; --deep: #0D0F11;
     color-scheme: dark;
   }
 
@@ -70,8 +71,15 @@
   .skip { position: absolute; left: -999px; top: .5rem; background: var(--safety); color: var(--on-safety); padding: .5rem .8rem; z-index: 10; }
   .skip:focus { left: .5rem; }
 
+  /* Zonas oscuras (barra, portada y pie) y banda amarilla (contacto): redefinen los colores */
+  .dark { --paper: var(--deep); --surface: #23272C; --ink: #ECEDEA; --muted: #A9AEB4; --rule: #373C42; background: var(--paper); color: var(--ink); }
+  .yellow { --paper: var(--safety); --surface: #E0A800; --ink: #17191C; --muted: #4A4215; --rule: rgba(23, 25, 28, .25); background: var(--paper); color: var(--ink); }
+  .yellow a { text-decoration-color: var(--ink); }
+  .yellow :focus-visible { outline-color: var(--ink); }
+  .stripe { height: 12px; background: repeating-linear-gradient(-45deg, var(--safety) 0 14px, #17191C 14px 28px); }
+
   /* ---------- Barra superior ---------- */
-  .top { position: sticky; top: 0; z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule); }
+  .top { position: sticky; top: 0; z-index: 5; border-bottom: 1px solid var(--rule); }
   .top .wrap { display: flex; align-items: center; gap: 1.5rem; height: 3.75rem; }
   .top .name { font-family: var(--cond); font-weight: 700; font-size: 1.2rem; text-decoration: none; margin-right: auto; }
   .top nav ul { display: flex; gap: 1.4rem; list-style: none; margin: 0; padding: 0; }
@@ -94,10 +102,17 @@
   }
 
   /* ---------- Portada ---------- */
-  .hero { padding: 4.5rem 0 4rem; }
+  .hero {
+    padding: 5.5rem 0 5rem;
+    background-image:
+      linear-gradient(rgba(236, 237, 234, .045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(236, 237, 234, .045) 1px, transparent 1px);
+    background-size: 32px 32px; background-position: -1px -1px;
+  }
   .hero .wrap { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 3.5rem; align-items: center; }
   .hero h1 { font-weight: 700; font-size: clamp(2.7rem, 5.2vw, 4.6rem); line-height: .95; letter-spacing: -.02em; }
   .hero h1 span { display: block; }
+  .hero h1 span + span { color: var(--safety); }
   .hero .intro { margin-top: 1.6rem; font-size: 1.2rem; line-height: 1.55; max-width: 34ch; }
   .hero .avail { margin-top: 1rem; color: var(--muted); max-width: 40ch; }
   .actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 2rem; }
@@ -111,15 +126,15 @@
   .btn.primary:hover { background: #E0A800; border-color: #E0A800; }
 
   /* Lazo de control */
-  .loop { margin: 0; border: 1px solid var(--rule); border-radius: 6px; padding: 1.4rem 1.5rem 1.5rem; }
+  .loop { margin: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 1.4rem 1.5rem 1.5rem; box-shadow: 0 24px 48px -24px rgba(0, 0, 0, .6); }
   .loop h2 { font-size: 1.35rem; }
   .loop > p { color: var(--muted); font-size: .95rem; max-width: 52ch; margin-top: .3rem; }
   .loop svg { display: block; width: 100%; height: auto; margin: 1rem 0 .6rem; overflow: visible; }
   .loop .wire { fill: none; stroke: var(--muted); stroke-width: 1.5; }
   .loop .head { fill: var(--muted); }
   .loop .node { cursor: pointer; }
-  .loop .node rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; transition: fill .2s; }
-  .loop .node:hover rect { fill: var(--surface); }
+  .loop .node rect { fill: var(--deep); stroke: var(--ink); stroke-width: 1.5; transition: fill .2s; }
+  .loop .node:hover rect { fill: #2C3137; }
   .loop .node[aria-pressed="true"] rect { fill: var(--safety); stroke: var(--safety); }
   .loop .node[aria-pressed="true"] text { fill: var(--on-safety); }
   .loop .node:focus { outline: none; }
@@ -138,9 +153,12 @@
   @keyframes show { to { opacity: 1; } }
 
   /* ---------- Secciones ---------- */
-  .section { border-top: 1px solid var(--rule); padding: 4.5rem 0; }
+  .section { padding: 5rem 0; }
+  .section.alt { background: var(--surface); }
   .section > .wrap { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 2.5rem; }
   .section h2 { font-size: clamp(1.9rem, 3.2vw, 2.5rem); }
+  .section h2::after { content: ""; display: block; width: 2.5rem; height: 5px; background: var(--safety); margin-top: .8rem; }
+  .yellow h2::after { background: var(--ink); }
   .section .lede { color: var(--muted); margin-top: .6rem; max-width: 26ch; }
   .prose p { max-width: var(--measure); }
   .prose p + p { margin-top: 1rem; }
@@ -149,19 +167,29 @@
   .about { display: grid; grid-template-columns: minmax(0, 1fr) 13rem; gap: 2.5rem; align-items: start; }
   .about .big { font-size: 1.3rem; line-height: 1.5; max-width: 40ch; margin-bottom: 1.2rem; }
   .about figure { margin: 0; }
-  .about img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 4px; }
+  .about figure { padding: 0 12px 12px 0; }
+  .about img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 4px; box-shadow: 12px 12px 0 var(--safety); }
 
   /* Proyectos */
-  .projects { display: grid; gap: 3.5rem; }
-  .project { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2rem; align-items: start; }
-  .project .media { border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: var(--surface); }
+  .projects { display: grid; gap: 1.5rem; }
+  .project {
+    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2rem; align-items: start;
+    background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 1.25rem;
+  }
+  .project > div:last-child { padding: .5rem .5rem .5rem 0; }
+  .project .media { border: 1px solid var(--rule); border-radius: 5px; overflow: hidden; background: var(--surface); }
+  .project .media:has(.flow) {
+    background-color: var(--surface);
+    background-image: radial-gradient(var(--rule) 1.2px, transparent 1.2px); background-size: 18px 18px;
+  }
   .project .media img { width: 100%; height: auto; }
   .project h3 { font-size: 1.6rem; }
   .project .status { display: inline-block; margin-top: .55rem; font-size: .85rem; font-weight: 600; padding: .1rem .5rem; border-radius: 3px; background: var(--safety); color: var(--on-safety); }
   .project .status.private { background: var(--surface); color: var(--ink); border: 1px solid var(--rule); }
   .project .desc { margin-top: .8rem; }
-  .project .tech { margin-top: .8rem; color: var(--muted); font-size: .95rem; }
-  .project .gh { margin-top: .3rem; color: var(--muted); font-size: .95rem; }
+  .project .tags { list-style: none; padding: 0; margin: 1rem 0 0; display: flex; flex-wrap: wrap; gap: .4rem; }
+  .project .tags li { font: 500 .85rem var(--sans); padding: .15rem .55rem; border-radius: 3px; background: var(--surface); border: 1px solid var(--rule); }
+  .project .gh { margin-top: .8rem; color: var(--muted); font-size: .95rem; }
   .project .links { display: flex; gap: 1.4rem; margin-top: 1.1rem; font-weight: 600; }
   .project:target h3 { text-decoration: underline; text-decoration-color: var(--safety); text-decoration-thickness: 4px; text-underline-offset: 6px; }
 
@@ -181,7 +209,10 @@
   /* Experiencia */
   .group + .group { margin-top: 3rem; }
   .group h3 { font-size: 1.15rem; color: var(--muted); font-family: var(--sans); font-weight: 500; margin-bottom: .8rem; }
-  .entry { display: grid; grid-template-columns: 10rem minmax(0, 1fr); gap: 1.5rem; padding: 1.2rem 0; border-top: 1px solid var(--rule); }
+  .entry { position: relative; display: grid; grid-template-columns: 10rem minmax(0, 1fr); gap: 1.5rem; padding: 0 0 2rem 1.75rem; border-left: 2px solid var(--rule); margin-left: 6px; }
+  .entry:last-child { padding-bottom: .3rem; }
+  .entry::before { content: ""; position: absolute; left: -8px; top: .3rem; width: 10px; height: 10px; border-radius: 50%; background: var(--paper); border: 3px solid var(--ink); }
+  .entry:first-of-type::before { background: var(--safety); border-color: var(--safety); }
   .entry time { color: var(--muted); font-variant-numeric: tabular-nums; font-size: .95rem; padding-top: .15rem; }
   .entry h4 { margin: 0; font-size: 1.15rem; font-weight: 600; }
   .entry .org { color: var(--muted); }
@@ -190,9 +221,9 @@
   .entry li::marker { color: var(--muted); }
 
   /* Habilidades */
-  .skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 3rem; margin: 0; }
-  .skills div { padding: 1rem 0; border-top: 1px solid var(--rule); }
-  .skills dt { font-weight: 600; }
+  .skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem; margin: 0; }
+  .skills div { padding: 1.1rem 1.25rem; background: var(--paper); border: 1px solid var(--rule); border-left: 4px solid var(--safety); border-radius: 4px; }
+  .skills dt { font: 600 1.15rem var(--cond); }
   .skills dd { margin: .25rem 0 0; }
   .skills dd small { color: var(--muted); font-size: .9em; }
 
@@ -204,13 +235,13 @@
   .contact .others a { display: inline-flex; align-items: center; gap: .45rem; font-weight: 500; min-height: 2.75rem; }
   .contact .others svg { width: 18px; height: 18px; }
 
-  footer { border-top: 1px solid var(--rule); padding: 1.8rem 0 2.4rem; color: var(--muted); font-size: .92rem; }
+  footer { padding: 2rem 0 2.6rem; color: var(--muted); font-size: .92rem; }
   footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem 1.5rem; }
 
   /* ---------- Pantallas medianas y móviles ---------- */
   @media (max-width: 960px) {
     .hero .wrap { grid-template-columns: 1fr; gap: 2.5rem; }
-    .hero { padding-top: 3rem; }
+    .hero { padding-top: 3.5rem; }
     .section > .wrap { grid-template-columns: 1fr; gap: 1.6rem; }
     .section .lede { max-width: 50ch; }
     .project { grid-template-columns: 1fr; gap: 1.2rem; }
@@ -220,7 +251,10 @@
     .wrap { padding: 0 1rem; }
     .about { grid-template-columns: 1fr; }
     .about figure { max-width: 12rem; order: -1; }
-    .entry { grid-template-columns: 1fr; gap: .3rem; }
+    .entry { grid-template-columns: 1fr; gap: .3rem; padding-left: 1.25rem; }
+    .project { padding: .9rem; }
+    .project > div:last-child { padding: .2rem; }
+    .hero { padding: 3rem 0 3.5rem; }
     .skills { grid-template-columns: 1fr; }
     .section { padding: 3.2rem 0; }
     .loop { padding: 1rem; }
@@ -236,7 +270,7 @@
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
 
-<header class="top">
+<header class="top dark">
   <div class="wrap">
     <a class="name" href="#inicio">Iker Rivera</a>
     <nav aria-label="Secciones">
@@ -258,7 +292,7 @@
 </header>
 
 <main id="contenido">
-  <section class="hero" id="inicio">
+  <section class="hero dark" id="inicio">
     <div class="wrap">
       <div>
         <h1><span>Iker Santiago</span><span>Rivera Ocampo</span></h1>
@@ -279,6 +313,7 @@
       </figure>
     </div>
   </section>
+  <div class="stripe" aria-hidden="true"></div>
 
   <section class="section" id="sobre-mi">
     <div class="wrap">
@@ -296,7 +331,7 @@
     </div>
   </section>
 
-  <section class="section" id="proyectos">
+  <section class="section alt" id="proyectos">
     <div class="wrap">
       <div>
         <h2>Proyectos</h2>
@@ -370,7 +405,7 @@
     </div>
   </section>
 
-  <section class="section" id="habilidades">
+  <section class="section alt" id="habilidades">
     <div class="wrap">
       <div><h2>Habilidades</h2></div>
       <dl class="skills">
@@ -385,7 +420,7 @@
     </div>
   </section>
 
-  <section class="section contact" id="contacto">
+  <section class="section contact yellow" id="contacto">
     <div class="wrap">
       <div><h2>Contacto</h2></div>
       <div>
@@ -404,7 +439,7 @@
   </section>
 </main>
 
-<footer>
+<footer class="dark">
   <div class="wrap">
     <span>© <span id="year">2026</span> Iker Santiago Rivera Ocampo</span>
     <span id="visits" hidden><span id="visits-n">0</span> <span>visitas</span></span>
@@ -573,7 +608,7 @@
       '<div class="media">' + media + '</div>' +
       '<div><h3>' + esc(title) + '</h3>' + badge +
         '<p class="desc">' + esc(desc) + '</p>' +
-        (tags.length ? '<p class="tech">' + esc(t("Hecho con") + " " + tags.join(", ")) + '.</p>' : '') +
+        (tags.length ? '<ul class="tags" aria-label="' + esc(t("Hecho con")) + '">' + tags.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : '') +
         ghLine + (links ? '<div class="links">' + links + '</div>' : '') +
       '</div></article>';
   }
