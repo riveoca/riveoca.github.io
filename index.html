@@ -113,6 +113,29 @@
   .hero h1 { font-weight: 700; font-size: clamp(2.7rem, 5.2vw, 4.6rem); line-height: .95; letter-spacing: -.02em; }
   .hero h1 span { display: block; }
   .hero h1 span + span { color: var(--safety); }
+  .hero { position: relative; overflow: hidden; }
+  .hero .wrap { position: relative; z-index: 1; }
+
+  /* Brazo robótico de la portada: sigue el cursor */
+  .arm { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  .arm .link { stroke: rgba(236, 237, 234, .11); stroke-linecap: round; fill: none; }
+  .arm .rail { stroke: rgba(236, 237, 234, .24); stroke-width: 1.5; stroke-dasharray: 3 7; fill: none; }
+  .arm .joint { fill: var(--deep); stroke: var(--safety); stroke-width: 3; }
+  .arm .hub { fill: var(--safety); }
+  .arm .base { fill: rgba(236, 237, 234, .09); }
+  .arm .claw { stroke: var(--safety); stroke-width: 5; stroke-linecap: round; fill: none; }
+  .arm .reach { fill: none; stroke: rgba(242, 183, 5, .18); stroke-width: 1; stroke-dasharray: 2 8; }
+  @media (max-width: 960px) { .arm { display: none; } }
+
+  /* Pista de circuito al costado: se llena con el scroll */
+  .trace { display: none; }
+  @media (min-width: 1360px) {
+    .trace { display: block; position: fixed; z-index: 4; left: 34px; top: 6rem; bottom: 2.5rem; width: 2px; background: #8A9096; opacity: .45; }
+    .trace::after { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--p, 0) * 100%); background: var(--safety); }
+    .trace i { position: absolute; left: -6px; width: 14px; height: 14px; border: 2px solid #8A9096; background: var(--paper); border-radius: 2px; transform: translateY(-50%); transition: background .2s, border-color .2s; }
+    .trace i.on { background: var(--safety); border-color: var(--safety); }
+    .trace:hover, .trace:has(i.on) { opacity: 1; }
+  }
   .hero .intro { margin-top: 1.6rem; font-size: 1.2rem; line-height: 1.55; max-width: 34ch; }
   .hero .avail { margin-top: 1rem; color: var(--muted); max-width: 40ch; }
   .actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 2rem; }
@@ -204,6 +227,11 @@
     content: ""; position: absolute; left: 50%; top: -7px; transform: translateX(-50%);
     border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 6px solid var(--muted);
   }
+  .flow li + li::before { background: linear-gradient(var(--safety), var(--safety)) no-repeat 0 -100% / 100% 45%, var(--muted); }
+  .project:hover .flow li + li::before, .project:focus-within .flow li + li::before { animation: signal 1.1s linear infinite; animation-delay: calc(var(--i) * .18s); }
+  @keyframes signal { from { background-position: 0 -120%, 0 0; } to { background-position: 0 220%, 0 0; } }
+  .project { transition: transform .18s ease, box-shadow .18s ease, border-color .18s; }
+  .project:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); border-color: var(--ink); }
   .more { display: inline-block; margin-top: 3rem; font-weight: 600; }
 
   /* Experiencia */
@@ -264,6 +292,8 @@
     html { scroll-behavior: auto; }
     .js .loop .wire.draw, .js .loop .head.draw { animation: none; stroke-dashoffset: 0; opacity: 1; }
     .loop .node rect { transition: none; }
+    .project, .project:hover { transition: none; transform: none; }
+    .project:hover .flow li + li::before { animation: none; }
   }
 </style>
 </head>
@@ -291,8 +321,10 @@
   </div>
 </header>
 
+<div class="trace" id="trace" aria-hidden="true"></div>
 <main id="contenido">
   <section class="hero dark" id="inicio">
+    <svg class="arm" id="arm" aria-hidden="true" focusable="false"></svg>
     <div class="wrap">
       <div>
         <h1><span>Iker Santiago</span><span>Rivera Ocampo</span></h1>
@@ -589,7 +621,7 @@
         ' width="1120" height="700" alt="' + esc(t("Captura de") + " " + title) + '" loading="lazy" decoding="async">';
     } else if (flujo && flujo.length) {
       media = '<ol class="flow" aria-label="' + esc(t("Recorrido de los datos")) + '">' +
-        flujo.map(function (f) { return '<li><span>' + esc(f) + '</span></li>'; }).join("") + '</ol>';
+        flujo.map(function (f, i) { return '<li style="--i:' + i + '"><span>' + esc(f) + '</span></li>'; }).join("") + '</ol>';
     }
     var estado = L(p, "estado");
     var badge = estado ? '<span class="status">' + esc(estado) + '</span>'
@@ -639,6 +671,104 @@
         document.getElementById("visits").hidden = false;
       })
       .catch(function () {});
+  })();
+
+  // ---------- Brazo robótico (cinemática inversa de dos eslabones) ----------
+  (function arm() {
+    var svg = document.getElementById("arm"), hero = document.getElementById("inicio");
+    var loopBox = document.querySelector(".loop");
+    var big = matchMedia("(min-width: 961px)");
+    var W, H, bx, by, L1, L2, target = null, pos = null, grip = 0, gripTo = 0, raf = 0;
+    var NS = "http://www.w3.org/2000/svg";
+    function el(tag, cls) { var e = document.createElementNS(NS, tag); if (cls) e.setAttribute("class", cls); svg.appendChild(e); return e; }
+    var reach = el("circle", "reach"), base = el("path", "base"), link1 = el("line", "link"), link2 = el("line", "link"),
+        rail1 = el("line", "rail"), rail2 = el("line", "rail"), j0 = el("circle", "joint"), j1 = el("circle", "joint"),
+        clawA = el("polyline", "claw"), clawB = el("polyline", "claw"), j2 = el("circle", "joint"), hub = el("circle", "hub");
+    function measure() {
+      var r = hero.getBoundingClientRect(), lr = loopBox.getBoundingClientRect();
+      W = r.width; H = r.height;
+      svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+      bx = lr.left - r.left - 28; by = H;
+      L1 = L2 = H * .4;
+      link1.setAttribute("stroke-width", 30); link2.setAttribute("stroke-width", 22);
+      reach.setAttribute("cx", bx); reach.setAttribute("cy", by); reach.setAttribute("r", L1 + L2);
+      base.setAttribute("d", "M" + (bx - 46) + " " + by + " L" + (bx - 30) + " " + (by - 26) + " H" + (bx + 30) + " L" + (bx + 46) + " " + by + " Z");
+      j0.setAttribute("cx", bx); j0.setAttribute("cy", by - 26); j0.setAttribute("r", 13);
+      var rest = { x: bx - L1 * .95, y: by - L1 * 1.15 };
+      if (!pos) pos = { x: rest.x, y: rest.y };
+      restPose = rest;
+    }
+    var restPose;
+    function solve(tx, ty) {
+      var ox = bx, oy = by - 26, dx = tx - ox, dy = ty - oy;
+      var d = Math.max(1, Math.min(Math.hypot(dx, dy), L1 + L2 - 1));
+      var a = Math.atan2(dy, dx), b = Math.acos(Math.max(-1, Math.min(1, (L1 * L1 + d * d - L2 * L2) / (2 * L1 * d))));
+      var e1 = { x: ox + L1 * Math.cos(a - b), y: oy + L1 * Math.sin(a - b) }, e2 = { x: ox + L1 * Math.cos(a + b), y: oy + L1 * Math.sin(a + b) };
+      var e = e1.y < e2.y ? e1 : e2;
+      return { ox: ox, oy: oy, ex: e.x, ey: e.y, hx: ox + d * Math.cos(a), hy: oy + d * Math.sin(a) };
+    }
+    function set(n, x1, y1, x2, y2) { n.setAttribute("x1", x1); n.setAttribute("y1", y1); n.setAttribute("x2", x2); n.setAttribute("y2", y2); }
+    function render() {
+      var k = solve(pos.x, pos.y);
+      set(link1, k.ox, k.oy, k.ex, k.ey); set(rail1, k.ox, k.oy, k.ex, k.ey);
+      set(link2, k.ex, k.ey, k.hx, k.hy); set(rail2, k.ex, k.ey, k.hx, k.hy);
+      j1.setAttribute("cx", k.ex); j1.setAttribute("cy", k.ey); j1.setAttribute("r", 11);
+      j2.setAttribute("cx", k.hx); j2.setAttribute("cy", k.hy); j2.setAttribute("r", 8);
+      hub.setAttribute("cx", k.ox); hub.setAttribute("cy", k.oy - 0); hub.setAttribute("r", 4);
+      var ang = Math.atan2(k.hy - k.ey, k.hx - k.ex), c = Math.cos(ang), s = Math.sin(ang), px = -s, py = c;
+      var open = 13 - grip * 8;
+      function claw(n, side) {
+        var x0 = k.hx + px * 6 * side, y0 = k.hy + py * 6 * side;
+        var x1 = k.hx + c * 14 + px * open * side, y1 = k.hy + s * 14 + py * open * side;
+        var x2 = k.hx + c * 28 + px * (open - 6) * side, y2 = k.hy + s * 28 + py * (open - 6) * side;
+        n.setAttribute("points", x0 + "," + y0 + " " + x1 + "," + y1 + " " + x2 + "," + y2);
+      }
+      claw(clawA, 1); claw(clawB, -1);
+    }
+    function tick() {
+      raf = 0;
+      var t = target || restPose, f = reduced ? 1 : .14;
+      pos.x += (t.x - pos.x) * f; pos.y += (t.y - pos.y) * f; grip += (gripTo - grip) * (reduced ? 1 : .25);
+      render();
+      if (Math.abs(t.x - pos.x) > .3 || Math.abs(t.y - pos.y) > .3 || Math.abs(gripTo - grip) > .01) raf = requestAnimationFrame(tick);
+    }
+    function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+    function setup() { if (!big.matches) return; measure(); render(); }
+    setup();
+    window.addEventListener("resize", function () { setup(); });
+    if (big.addEventListener) big.addEventListener("change", setup);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(setup);
+    hero.addEventListener("pointermove", function (e) {
+      if (!big.matches) return;
+      var r = hero.getBoundingClientRect();
+      target = { x: e.clientX - r.left, y: e.clientY - r.top }; kick();
+    });
+    hero.addEventListener("pointerleave", function () { target = null; gripTo = 0; kick(); });
+    hero.addEventListener("pointerdown", function () { gripTo = 1; kick(); });
+    window.addEventListener("pointerup", function () { if (gripTo) { gripTo = 0; kick(); } });
+  })();
+
+  // ---------- Pista de circuito: se llena al bajar ----------
+  (function trace() {
+    var tr = document.getElementById("trace"), secs = document.querySelectorAll("main section[id]"), pads = [];
+    secs.forEach(function () { var i = document.createElement("i"); tr.appendChild(i); pads.push(i); });
+    var ticking = false;
+    function place() {
+      var max = document.documentElement.scrollHeight - innerHeight;
+      secs.forEach(function (s, i) { pads[i].style.top = (Math.min(1, s.offsetTop / max) * 100) + "%"; pads[i]._at = s.offsetTop / max; });
+      update();
+    }
+    function update() {
+      ticking = false;
+      var max = document.documentElement.scrollHeight - innerHeight, p = max > 0 ? Math.min(1, scrollY / max) : 0;
+      tr.style.setProperty("--p", p);
+      pads.forEach(function (d) { d.classList.toggle("on", p >= d._at - .002); });
+    }
+    window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    window.addEventListener("resize", place);
+    window.addEventListener("load", place);
+    if (window.ResizeObserver) new ResizeObserver(function () { place(); }).observe(document.body);
+    place();
   })();
 
   // Tema claro / oscuro
