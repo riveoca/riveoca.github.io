@@ -21,12 +21,12 @@ const PROYECTOS = [
     tags: ["Python", "FastAPI", "WebSocket", "PySide6 / QML", "tinytuya", "Raspberry Pi 5"],
   },
   {
-    titulo: "Extracción de datos y APIs",
-    descripcion: "Herramienta que extrae y organiza datos de un aplicativo empresarial mediante scraping y los expone con endpoints de API validados con Postman. Incluye automatización de navegador con Selenium para probar el aplicativo. Proyecto de la práctica en Servitel (código privado).",
-    tipo: "Backend · Automatización",
-    icono: "code",
-    privado: true,
-    tags: ["Python", "API", "Web scraping", "Postman", "Selenium"],
+    repo: "tareas",
+    titulo: "Tareas: IA → Jira",
+    descripcion: "App web que convierte la descripción del trabajo en épicas y tareas de Jira usando IA (Claude u Ollama en local), y muestra el avance del sprint con bandeja, tablero e informes de rendimiento.",
+    tipo: "Backend · IA",
+    imagen: "img/proyecto-tareas.png",
+    tags: ["Python", "FastAPI", "SQLite", "Jira API", "LLM"],
   },
   {
     repo: "gestion-horarios-laravel",
@@ -34,6 +34,23 @@ const PROYECTOS = [
     descripcion: "Aplicación web para gestionar usuarios, horarios y días festivos colombianos, con calendario interactivo, roles y permisos, e importación y exportación en CSV.",
     tipo: "Desarrollo web",
     tags: ["Laravel 12", "PHP 8.2", "FullCalendar", "Tailwind", "SQLite"],
+  },
+  {
+    repo: "riveoca.github.io",
+    titulo: "Portafolio personal",
+    descripcion: "Este sitio: HTML, CSS y JavaScript sin frameworks, con modo claro y oscuro, proyectos cargados desde la API de GitHub y CV que se actualiza desde Google Docs.",
+    tipo: "Frontend",
+    imagen: "img/captura-portafolio.png",
+    demo: "https://riveoca.github.io",
+    tags: ["HTML", "CSS", "JavaScript", "GitHub Pages"],
+  },
+  {
+    titulo: "Extracción de datos y APIs",
+    descripcion: "Herramienta que extrae y organiza datos de un aplicativo empresarial mediante scraping y los expone con endpoints de API validados con Postman. Incluye automatización de navegador con Selenium para probar el aplicativo. Proyecto de la práctica en Servitel (código privado).",
+    tipo: "Backend · Automatización",
+    icono: "code",
+    privado: true,
+    tags: ["Python", "API", "Web scraping", "Postman", "Selenium"],
   },
 ];
 
