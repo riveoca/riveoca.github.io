@@ -12,6 +12,7 @@ Portafolio personal de Iker Santiago Rivera Ocampo, estudiante de Ingeniería Me
 
 - Portada con datos generales y descarga del CV.
 - Sobre mí, proyectos, experiencia, formación, habilidades y contacto.
+- Versión en español e inglés (botón ES/EN o enlace `?lang=en`).
 - Modo claro y oscuro, y animaciones que se desactivan si el sistema pide reducir el movimiento.
 - Diseño adaptable a móvil.
 
@@ -21,6 +22,7 @@ Portafolio personal de Iker Santiago Rivera Ocampo, estudiante de Ingeniería Me
 - Publicado con GitHub Pages.
 - **Proyectos:** se generan desde `config.js` y completan el lenguaje y la fecha de actualización con la API de GitHub.
 - **CV:** el botón de descarga toma el PDF de un documento de Google Docs (`CV_URL` en `config.js`), así que se actualiza sin tocar el repositorio.
+- **Idioma:** los textos en inglés están en `i18n.js` y los de cada proyecto en los campos `*_en` de `config.js`.
 - **Visitas:** contador con GoatCounter.
 
 ## Ejecutar en local
