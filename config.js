@@ -29,7 +29,7 @@ const PROYECTOS = [
     tags: ["Python", "API", "Web scraping", "Postman", "Selenium"],
   },
   {
-    repo: "proyecto_practicas_laravel",
+    repo: "gestion-horarios-laravel",
     titulo: "Gestión de horarios y usuarios",
     descripcion: "Aplicación web para gestionar usuarios, horarios y días festivos colombianos, con calendario interactivo, roles y permisos, e importación y exportación en CSV.",
     tipo: "Desarrollo web",
